@@ -12,4 +12,4 @@ Instructions :
 		- rtmpUrl : RTMP Server URL
 		- streamId : Video Id
 		
-- Open the HTML file using Internet explorer (To test it localy) Or any other browser after uploading the files
+- Open the HTML file using Internet explorer (To test it locally) Or any other browser after uploading the files
