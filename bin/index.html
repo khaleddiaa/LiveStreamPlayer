@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title>LS_VideoPlayer</title>
+	<meta name="description" content="" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="js/swfobject.js"></script>
+	<script>
+		var userId = "5890669"
+		var targetUser = "217"
+		var followUrl = "http://new.livestream.com/api/accounts/"+userId+"/following";
+		var unfollowUrl = "http://new.livestream.com/api/accounts/"+userId+"/following/" + targetUser;
+		var statusUrl = "http://new.livestream.com/api/accounts/"+userId+"/social_graph/follows:account:" + targetUser;
+		var rtmpUrl = "rtmp://cp112881.live.edgefcs.net/live/";
+		var streamId = "4103375_2634658_ec99c676_1_2320@112867"
+		var flashvars = {};
+		
+		flashvars.stream = streamId;
+		flashvars.url = rtmpUrl;
+		
+		var params = {
+			menu: "false",
+			scale: "noScale",
+			allowFullscreen: "true",
+			allowScriptAccess: "always",
+			bgcolor: "",
+			wmode: "direct" 
+		};
+		var attributes = {
+			id:"LSVideoPlayer"
+		};
+		swfobject.embedSWF(
+			"LSVideoPlayer.swf", 
+			"altContent", "100%", "100%", "10.0.0", 
+			"expressInstall.swf", 
+			flashvars, params, attributes);
+			
+		function followUser() {
+			$.ajax({
+				  url: followUrl,
+				  dataType: 'jsonp',
+				  type : 'POST',
+				  data: {
+					account_id: '217'
+				  },
+				  success: function(data, status) {
+					document.getElementById('LSVideoPlayer').requestResult("follow_success");
+				  },
+				  beforeSend: function(xhr, settings) { xhr.setRequestHeader('Authorization','Bearer f9ab5ab4f7e4c4f04720bcfef4892b73'); } 
+			});
+		}
+		
+		function unfollowUser() {
+			$.ajax({
+				  url: unfollowUrl,
+				  dataType: 'jsonp',
+				  type : 'DELETE',
+				  data: {},
+				  success: function(data, status) {
+					document.getElementById('LSVideoPlayer').requestResult("unfollow_success");
+				  },
+				  error:function(){document.getElementById('LSVideoPlayer').requestResult("unfollow_success");},
+				  beforeSend: function(xhr, settings) { xhr.setRequestHeader('Authorization','Bearer f9ab5ab4f7e4c4f04720bcfef4892b73'); } 
+			});
+		}
+		
+		function followStatus() {
+			$.ajax({
+				  type: 'GET',
+				  url: statusUrl, 
+				  dataType: 'jsonp',
+				  success: function(data) {
+					document.getElementById('LSVideoPlayer').requestResult("Success");
+				  }
+			});
+		}
+		
+	</script>
+	<style>
+		html, body { height:100%; overflow:hidden; }
+		body { margin:0; }
+	</style>
+</head>
+<body>
+	<div id="altContent">
+		<h1>LS_VideoPlayer</h1>
+		<p><a href="http://www.adobe.com/go/getflashplayer">Get Adobe Flash player</a></p>
+	</div>
+</body>
+</html>
